@@ -13,7 +13,7 @@ Analizando el código proporcionado se puede conlcuir que no cumple con varios p
 
 - 1.- Single Responsibility Principle (SRP): La clase SystemManager tiene demasiadas responsabilidades. Se encarga de verificar el inventario, procesar pagos, actualizar el estado del pedido y notificar al cliente, lo cual hace que no se cumpla el principio de que una clase deberia realizar una sola responsabilidad.
     
-- 2.- Open-Closed Principle (OCP): Si se desea agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder, lo cual hace que no se cumpla el principio de abierto/cerrado.
+- 2.- Open/Closed Principle (OCP): Si se desea agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder, lo cual hace que no se cumpla el principio de open/closed.
     
 - 3.- Dependency Inversion Principle (DIP): La clase SystemManager está directamente acoplada a implementaciones concretas de servicios como paymentService, expressPaymentService, database y emailService. Esto hace que la clase sea difícil de probar y modificar y no se cumpla con el principio.
 
