@@ -11,11 +11,33 @@ Se nos entrega un pseudo-codigo del cual se deben realizar ciertas actividades e
 
 Analizando el código proporcionado se puede conlcuir que no cumple con varios principios SOLID:  
 
-- Single Responsibility Principle (SRP): La clase SystemManager tiene demasiadas responsabilidades. Se encarga de verificar el inventario, procesar pagos, actualizar el estado del pedido y notificar al cliente, lo cual hace que no se cumpla el principio de que una clase deberia realizar una sola responsabilidad.
+- 1.- Single Responsibility Principle (SRP): La clase SystemManager tiene demasiadas responsabilidades. Se encarga de verificar el inventario, procesar pagos, actualizar el estado del pedido y notificar al cliente, lo cual hace que no se cumpla el principio de que una clase deberia realizar una sola responsabilidad.
     
-- Open-Closed Principle (OCP): Si se desea agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder, lo cual hace que no se cumpla el principio de abierto/cerrado.
+- 2.- Open-Closed Principle (OCP): Si se desea agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder, lo cual hace que no se cumpla el principio de abierto/cerrado.
     
-- Dependency Inversion Principle (DIP): La clase SystemManager está directamente acoplada a implementaciones concretas de servicios como paymentService, expressPaymentService, database y emailService. Esto hace que la clase sea difícil de probar y modificar y no se cumpla con el principio.
+- 3.- Dependency Inversion Principle (DIP): La clase SystemManager está directamente acoplada a implementaciones concretas de servicios como paymentService, expressPaymentService, database y emailService. Esto hace que la clase sea difícil de probar y modificar y no se cumpla con el principio.
+
+```
+public class SystemManager {
+    // Otros métodos omitidos por brevedad
+
+    // Método processOrder con múltiples responsabilidades
+    public void processOrder(Order order) {
+        if (order.type == "standard") {
+            verifyInventory(order);
+            processStandardPayment(order);
+        } else if (order.type == "express") {
+            verifyInventory(order);
+            processExpressPayment(order, "highPriority");
+        }
+        updateOrderStatus(order, "processed");
+        notifyCustomer(order);
+    }
+
+    // Otros métodos omitidos por brevedad
+}
+
+```
 
 ## 2.- Refactor the Code
 
@@ -32,19 +54,96 @@ Para refactorizar el código y cumplir con los principios SOLID, se pueden reali
 Se documentan los cambios al igual que los issues que se presentaban en el codigo base.
 
 - ### Problema 1.- La clase SystemManager tenía demasiadas responsabilidades.
-  - Principio: Single Responsibility Principle (SRP)
-  - Solución: Se crearon clases separadas para manejar diferentes tipos de pedidos (StandardOrderProcessor y ExpressOrderProcessor).
-  - Beneficios: Cada clase tiene ahora una única responsabilidad, lo que hace que el código sea más fácil de entender, probar y mantener.  
+  - ### Principio: Single Responsibility Principle (SRP)
+ 
+ ```
+    public class OrderProcessor {
+    public void processOrder(Order order) {
+        verifyInventory(order);
+        processPayment(order);
+        updateOrderStatus(order, "processed");
+        notifyCustomer(order);
+    }
+
+    private void verifyInventory(Order order) {
+        // Checks inventory levels
+        // Code omitted for brevity
+    }
+
+    private void processPayment(Order order) {
+        // Handles payment processing based on order type
+        PaymentProcessor paymentProcessor = getPaymentProcessor(order.getType());
+        if (!paymentProcessor.processPayment(order.getAmount())) {
+            throw new PaymentException("Payment failed");
+        }
+    }
+
+    private void updateOrderStatus(Order order, String status) {
+        // Updates the order status
+        // Code omitted for brevity
+    }
+
+    private void notifyCustomer(Order order) {
+        // Sends notification to the customer
+        // Code omitted for brevity
+    }
+
+    private PaymentProcessor getPaymentProcessor(String orderType) {
+        // Returns appropriate payment processor based on order type
+        // Code omitted for brevity
+    }
+ }
+```
+ - ### Solución:
+ -  La clase OrderProcessor ahora se encarga únicamente del procesamiento de órdenes. Cada método dentro de esta clase tiene una única responsabilidad, como verificar inventario, procesar pagos, actualizar estado de la orden y notificar al cliente. Esto cumple con el principio SRP, ya que la clase tiene una sola razón para cambiar.
 
 - ### Problema 2.- Si se quiere agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder.
-  - Principio: Open-Closed Principle (OCP)
-  - Solución: Se crearon clases separadas para manejar diferentes tipos de pedidos. Para agregar un nuevo tipo de pedido, simplemente se crea una nueva clase que implemente la interfaz OrderProcessor.
-  - Beneficios: El código es ahora más fácil de extender, ya que se pueden agregar nuevos tipos de pedidos sin modificar el código existente.
+  - ### Principio: Open-Closed Principle (OCP)
+ ```
+interface PaymentProcessor {
+    boolean processPayment(double amount);
+}
 
-- ### Problema 3.- La clase SystemManager estaba directamente acoplada a implementaciones concretas de servicios.
-  - Principio: Dependency Inversion Principle (DIP)
-  - Solución: Se introdujeron interfaces para los servicios y se pasaron las implementaciones concretas a través del constructor (inyección de dependencias).
-  - Beneficio: El código es ahora más flexible y fácil de probar, ya que las dependencias pueden ser fácilmente sustituidas por mocks o stubs en las pruebas.
+class StandardPaymentProcessor implements PaymentProcessor {
+    // Implementation omitted for brevity
+}
+
+class ExpressPaymentProcessor implements PaymentProcessor {
+    // Implementation omitted for brevity
+}
+
+public class OrderProcessor {
+    // Constructor and other methods omitted for brevity
+
+    public void processOrder(Order order) {
+        verifyInventory(order);
+        processPayment(order);
+        updateOrderStatus(order, "processed");
+        notifyCustomer(order);
+    }
+
+    private void processPayment(Order order) {
+        PaymentProcessor paymentProcessor = getPaymentProcessor(order.getType());
+        if (!paymentProcessor.processPayment(order.getAmount())) {
+            throw new PaymentException("Payment failed");
+        }
+    }
+
+    private PaymentProcessor getPaymentProcessor(String orderType) {
+        if ("standard".equals(orderType)) {
+            return new StandardPaymentProcessor();
+        } else if ("express".equals(orderType)) {
+            return new ExpressPaymentProcessor();
+        } else {
+            throw new IllegalArgumentException("Invalid order type");
+        }
+    }
+}
+
+ ```
+
+- ### Solución:
+- Se ha implementado el patrón Strategy para el procesamiento de pagos. La clase OrderProcessor ahora utiliza interfaces y delega el procesamiento de pagos a clases específicas (StandardPaymentProcessor y ExpressPaymentProcessor). Esto permite añadir nuevos tipos de órdenes sin modificar la clase OrderProcessor, cumpliendo así con el principio OCP.
 
 Con los cambios implementados en la refactorización, se logra cumplir en lo más posible con los principios SOLID aprendidos en el Lab:
 
