@@ -52,7 +52,7 @@ class OrderProcessor {
         notifyCustomer(order);
     }
 
-    private void checkInventory(Order order) {
+    private void verifyInventory(Order order) {
         if (!inventoryService.hasEnoughInventory(order.getProductId(), order.getQuantity())) {
             throw new InsufficientInventoryException("Out of stock");
         }
