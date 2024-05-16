@@ -66,12 +66,10 @@ Se documentan los cambios al igual que los issues que se presentaban en el codig
     }
 
     private void verifyInventory(Order order) {
-        // Checks inventory levels
-        // Code omitted for brevity
+        // Codigo omitido para brevedad
     }
 
     private void processPayment(Order order) {
-        // Handles payment processing based on order type
         PaymentProcessor paymentProcessor = getPaymentProcessor(order.getType());
         if (!paymentProcessor.processPayment(order.getAmount())) {
             throw new PaymentException("Payment failed");
@@ -79,18 +77,15 @@ Se documentan los cambios al igual que los issues que se presentaban en el codig
     }
 
     private void updateOrderStatus(Order order, String status) {
-        // Updates the order status
-        // Code omitted for brevity
+        // Codigo omitido para brevedad
     }
 
     private void notifyCustomer(Order order) {
-        // Sends notification to the customer
-        // Code omitted for brevity
+        // Codigo omitido para brevedad
     }
 
     private PaymentProcessor getPaymentProcessor(String orderType) {
-        // Returns appropriate payment processor based on order type
-        // Code omitted for brevity
+        // Codigo omitido para brevedad
     }
  }
 ```
@@ -105,15 +100,15 @@ interface PaymentProcessor {
 }
 
 class StandardPaymentProcessor implements PaymentProcessor {
-    // Implementation omitted for brevity
+    // Codigo omitido para brevedad
 }
 
 class ExpressPaymentProcessor implements PaymentProcessor {
-    // Implementation omitted for brevity
+    // Codigo omitido para brevedad
 }
 
 public class OrderProcessor {
-    // Constructor and other methods omitted for brevity
+    // Codigo omitido para brevedad
 
     public void processOrder(Order order) {
         verifyInventory(order);
