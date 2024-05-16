@@ -8,7 +8,7 @@ interface OrderProcessor {
     void processOrder(Order order);
 }
 
-// Se aplica el Single Responsability Principle (SRP) ya que tiene solo una razón para cambiar, que son los cambios en cómo se procesan los StandardOrder.
+// Se aplica el Single Responsibility Principle (SRP) ya que tiene solo una razón para cambiar, que son los cambios en cómo se procesan los StandardOrder.
 class StandardOrderProcessor implements OrderProcessor {
     private PaymentService paymentService;
     private InventoryService inventoryService;
