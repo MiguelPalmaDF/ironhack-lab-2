@@ -138,7 +138,7 @@ public class OrderProcessor {
  ```
 
 - ### Solución:
-- Se ha implementado el patrón Strategy para el procesamiento de pagos. La clase OrderProcessor ahora utiliza interfaces y delega el procesamiento de pagos a clases específicas (StandardPaymentProcessor y ExpressPaymentProcessor). Esto permite añadir nuevos tipos de órdenes sin modificar la clase OrderProcessor, cumpliendo así con el principio OCP.
+- La clase OrderProcessor ahora utiliza interfaces y delega el procesamiento de pagos a clases específicas (StandardPaymentProcessor y ExpressPaymentProcessor). Esto permite añadir nuevos tipos de órdenes sin modificar la clase OrderProcessor, cumpliendo así con el principio OCP.
 
 Con los cambios implementados en la refactorización, se logra cumplir en lo más posible con los principios SOLID aprendidos en el Lab:
 
