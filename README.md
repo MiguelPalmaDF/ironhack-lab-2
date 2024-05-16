@@ -25,26 +25,26 @@ Para refactorizar el código y cumplir con los principios SOLID, se pueden reali
 - Pasar las implementaciones concretas a través del constructor por medio de inyección de dependencias
 - También se pueden crear clases separadas para manejar diferentes tipos de pedidos.
 
-  ** EN este mismo repositorio se adjunta un achivo con el codigo refactorizado: lab2-refactor-solid-code.java **
+  ### ** EN este mismo repositorio se adjunta un achivo con el codigo refactorizado: lab2-refactor-solid-code.java **
 
 ## 3.- Documment Your Changes
 
 Se documentan los cambios al igual que los issues que se presentaban en el codigo base.
 
-- Problema 1.- La clase SystemManager tenía demasiadas responsabilidades.
+- ### Problema 1.- La clase SystemManager tenía demasiadas responsabilidades.
   - Principio: Single Responsibility Principle (SRP)
   - Solución: Se crearon clases separadas para manejar diferentes tipos de pedidos (StandardOrderProcessor y ExpressOrderProcessor).
   - Beneficios: Cada clase tiene ahora una única responsabilidad, lo que hace que el código sea más fácil de entender, probar y mantener.  
 
-- Problema 2.- Si se quiere agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder.
+- ### Problema 2.- Si se quiere agregar un nuevo tipo de pedido, se tendría que modificar el método processOrder.
   - Principio: Open-Closed Principle (OCP)
   - Solución: Se crearon clases separadas para manejar diferentes tipos de pedidos. Para agregar un nuevo tipo de pedido, simplemente se crea una nueva clase que implemente la interfaz OrderProcessor.
   - Beneficios: El código es ahora más fácil de extender, ya que se pueden agregar nuevos tipos de pedidos sin modificar el código existente.
 
-- Problema 3.- La clase SystemManager estaba directamente acoplada a implementaciones concretas de servicios.
-- Principio: Dependency Inversion Principle (DIP)
-- Solución: Se introdujeron interfaces para los servicios y se pasaron las implementaciones concretas a través del constructor (inyección de dependencias).
-- Beneficio: El código es ahora más flexible y fácil de probar, ya que las dependencias pueden ser fácilmente sustituidas por mocks o stubs en las pruebas.
+- ### Problema 3.- La clase SystemManager estaba directamente acoplada a implementaciones concretas de servicios.
+  - Principio: Dependency Inversion Principle (DIP)
+  - Solución: Se introdujeron interfaces para los servicios y se pasaron las implementaciones concretas a través del constructor (inyección de dependencias).
+  - Beneficio: El código es ahora más flexible y fácil de probar, ya que las dependencias pueden ser fácilmente sustituidas por mocks o stubs en las pruebas.
 
 Con los cambios implementados en la refactorización, se logra cumplir en lo más posible con los principios SOLID aprendidos en el Lab:
 
