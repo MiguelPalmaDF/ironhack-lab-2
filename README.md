@@ -25,7 +25,7 @@ Para refactorizar el código y cumplir con los principios SOLID, se pueden reali
 - Pasar las implementaciones concretas a través del constructor por medio de inyección de dependencias
 - También se pueden crear clases separadas para manejar diferentes tipos de pedidos.
 
-  ## ** EN este mismo repositorio se adjunta un achivo con el codigo refactorizado: Lab Refactor SOLID Code.java **
+  ** EN este mismo repositorio se adjunta un achivo con el codigo refactorizado: lab2-refactor-solid-code.java **
 
 ## 3.- Documment Your Changes
 
@@ -46,4 +46,16 @@ Se documentan los cambios al igual que los issues que se presentaban en el codig
 - Solución: Se introdujeron interfaces para los servicios y se pasaron las implementaciones concretas a través del constructor (inyección de dependencias).
 - Beneficio: El código es ahora más flexible y fácil de probar, ya que las dependencias pueden ser fácilmente sustituidas por mocks o stubs en las pruebas.
 
-- Con los cambios implementados y siguiendo los principios SOLID, si necesitamos agregar un nuevo tipo de pedido, podemos crear una nueva clase que implemente OrderProcessor. Esto significa que nuestro código cumple con el principio abierto/cerrado: está abierto para la extensión (podemos agregar nuevos tipos de pedidos) pero cerrado para la modificación (no necesitamos modificar el código existente para agregar nuevos tipos de pedidos).
+Con los cambios implementados en la refactorización, se logra cumplir en lo más posible con los principios SOLID aprendidos en el Lab:
+
+- Single Responsibility Principle (SRP): Cada clase tiene una única responsabilidad. Por ejemplo, StandardOrderProcessor solo es responsable de procesar pedidos estándar.
+    
+- Open/Closed Principle (OCP): El sistema está abierto para la extensión pero cerrado para la modificación. Se pueden procesar nuevos tipos de pedidos agregando nuevas clases que implementen la interfaz OrderProcessor.
+  
+- Liskov Substitution Principle (LSP): Este principio se aplica implícitamente ya que cualquier clase que implemente la interfaz OrderProcessor puede ser sustituida sin cambiar la corrección del programa.
+  
+- Interface Segregation Principle (ISP): El sistema utiliza múltiples interfaces específicas (PaymentService, InventoryService, OrderStatusService, NotificationService) en lugar de una interfaz de propósito general.
+   
+- Dependency Inversion Principle (DIP): Los módulos de alto nivel (como OrderProcessor) dependen de abstracciones (como PaymentService), no de módulos de bajo nivel. Esto se logra mediante la inyección de dependencias en el constructor.
+
+
